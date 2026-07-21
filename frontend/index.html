@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>下崽儿 · 万能视频下载 | 粘条链接就完事</title>
+  <meta name="description" content="粘贴链接，秒下全网视频。YouTube、B站、抖音、X 都能存。手机也能下。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ 顶栏 ============ -->
+  <header class="sticky top-0 z-50" style="backdrop-filter:blur(8px);background:rgba(243,239,230,.72);border-bottom:2px solid #16130e;">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <span class="grid place-items-center" style="width:36px;height:36px;background:#ff4a24;border:2px solid #16130e;border-radius:10px;transform:rotate(-6deg);">
+          <iconify-icon icon="solar:download-minimalistic-bold" style="color:#fff;font-size:20px"></iconify-icon>
+        </span>
+        <b class="text-lg tracking-tight">下崽儿</b>
+        <span class="tape text-xs hidden sm:inline">别问，问就是能下</span>
+      </a>
+      <nav class="flex items-center gap-2 sm:gap-3">
+        <a href="#pricing" class="btn btn-ghost text-sm hidden sm:inline-flex">开会员</a>
+        <span id="memberPill" class="text-sm font-bold px-3 py-1 rounded-full hidden" style="border:2px solid #16130e;background:#ffd23e;">👑 会员</span>
+        <button id="openRedeem" class="btn btn-blue text-sm">
+          <iconify-icon icon="solar:ticket-bold"></iconify-icon><span>兑换码</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ 英雄区（不对称） ============ -->
+  <section class="max-w-6xl mx-auto px-5 pt-12 pb-8 grid lg:grid-cols-12 gap-10 items-start">
+    <!-- 左：主张 + 输入 -->
+    <div class="lg:col-span-7">
+      <div class="tape text-sm mb-5">🎬 全网视频，一键搬走</div>
+      <h1 class="display text-5xl sm:text-6xl mb-5">
+        看到的视频<br />
+        <span class="underline-hand">统统</span>存下来，<br />
+        <span class="brush">手机也行。</span>
+      </h1>
+      <p class="text-lg mb-7" style="color:#4a453b;max-width:30rem">
+        平台不给下？限速？糊？<br/>粘条链接进来，剩下的交给我。
+      </p>
+
+      <div class="slab p-3 sm:p-4 max-w-2xl">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input id="urlInput" class="paste flex-1" placeholder="把视频链接粘这儿…" />
+          <button id="parseBtn" class="btn btn-primary justify-center text-base whitespace-nowrap">
+            <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon><span>解析</span>
+          </button>
+        </div>
+        <div class="flex items-center flex-wrap gap-2 mt-3 pl-1">
+          <button class="btn btn-ghost text-xs" id="batchToggle">
+            <iconify-icon icon="solar:list-bold"></iconify-icon> 批量粘一堆
+          </button>
+          <span class="text-xs" style="color:#7a7364">支持一行一个链接</span>
+        </div>
+        <textarea id="batchInput" class="paste mt-3 hidden" rows="4" placeholder="一行一个链接，最多免费 3 个…"></textarea>
+        <div id="batchActions" class="mt-3 hidden">
+          <button id="batchGo" class="btn btn-blue text-sm"><iconify-icon icon="solar:play-bold"></iconify-icon> 一起下</button>
+        </div>
+      </div>
+
+      <!-- 平台图标 -->
+      <div class="mt-7">
+        <div class="text-xs mb-3 font-bold" style="color:#7a7364">这些地方，随便薅 ↓</div>
+        <div class="flex flex-wrap gap-3">
+          <span class="plat" title="YouTube"><iconify-icon icon="logos:youtube-icon"></iconify-icon></span>
+          <span class="plat" title="哔哩哔哩" style="color:#00a1d6"><iconify-icon icon="simple-icons:bilibili"></iconify-icon></span>
+          <span class="plat" title="抖音/TikTok"><iconify-icon icon="simple-icons:tiktok"></iconify-icon></span>
+          <span class="plat" title="X / Twitter"><iconify-icon icon="simple-icons:x"></iconify-icon></span>
+          <span class="plat" title="Instagram" style="color:#e4405f"><iconify-icon icon="simple-icons:instagram"></iconify-icon></span>
+          <span class="plat" title="微博" style="color:#e6162d"><iconify-icon icon="simple-icons:sinaweibo"></iconify-icon></span>
+          <span class="plat" title="还有 1000+ 站" style="font-weight:800;font-size:15px">…+1k</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：偏移的示例卡（装饰） -->
+    <div class="lg:col-span-5 relative hidden lg:block">
+      <div class="slab slab-flame p-4" style="transform:rotate(2deg);margin-top:24px">
+        <div class="rounded-xl overflow-hidden mb-3" style="border:2px solid #16130e">
+          <img src="https://picsum.photos/seed/dl-hero/640/360" alt="示例封面" class="w-full block" />
+        </div>
+        <div class="font-bold leading-snug mb-2">凌晨三点，我把这条视频存下来了</div>
+        <div class="flex items-center gap-2 text-xs mb-3" style="color:#7a7364">
+          <iconify-icon icon="solar:clock-circle-bold"></iconify-icon> 04:12
+          <span>·</span> 4K 高清 <span>·</span> 已存本地
+        </div>
+        <div class="bar done"><i style="width:100%"></i></div>
+      </div>
+      <div class="slab slab-blue p-3 absolute" style="bottom:-28px;left:-26px;transform:rotate(-5deg);background:#ffd23e">
+        <div class="flex items-center gap-2 font-bold text-sm">
+          <iconify-icon icon="solar:bolt-bold" style="font-size:20px"></iconify-icon> 平均 6 秒解析
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 解析结果 ============ -->
+  <section id="resultSection" class="max-w-6xl mx-auto px-5 py-6 hidden">
+    <div class="slab slab-blue p-5 reveal">
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="md:col-span-1">
+          <div class="rounded-xl overflow-hidden" style="border:2px solid #16130e">
+            <img id="rThumb" class="w-full block" alt="封面" />
+          </div>
+        </div>
+        <div class="md:col-span-2">
+          <h3 id="rTitle" class="text-2xl font-extrabold leading-snug mb-2"></h3>
+          <div class="flex items-center flex-wrap gap-3 text-sm mb-4" style="color:#4a453b">
+            <span id="rUploader" class="flex items-center gap-1"></span>
+            <span id="rDuration" class="flex items-center gap-1"></span>
+            <span id="rExtractor" class="tape text-xs"></span>
+          </div>
+
+          <div class="text-xs font-bold mb-2" style="color:#7a7364">选择清晰度 · 点一下切换 ↓</div>
+          <div id="qualityRow" class="flex flex-wrap gap-2 mb-4"></div>
+
+          <div class="flex flex-wrap gap-3">
+            <button id="downloadBtn" class="btn btn-primary">
+              <iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon> 开下！
+            </button>
+            <button id="audioBtn" class="btn">
+              <iconify-icon icon="solar:music-note-2-bold"></iconify-icon> 只要音频·MP3
+            </button>
+            <button id="sumBtn" class="btn btn-blue">
+              <iconify-icon icon="solar:magic-stick-3-bold"></iconify-icon> AI 总结一下
+            </button>
+            <button id="transBtn" class="btn">
+              <iconify-icon icon="solar:translation-bold"></iconify-icon> 翻译字幕
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 任务列表 ============ -->
+  <section id="taskSection" class="max-w-6xl mx-auto px-5 py-6 hidden">
+    <div class="flex items-center gap-2 mb-4">
+      <h2 class="display text-3xl">下载间</h2>
+      <span class="tape text-xs">干活中</span>
+    </div>
+    <div id="taskList" class="grid sm:grid-cols-2 gap-4"></div>
+  </section>
+
+  <!-- ============ AI 结果 ============ -->
+  <section id="aiSection" class="max-w-6xl mx-auto px-5 py-6 hidden">
+    <div class="slab p-5 reveal">
+      <div class="flex items-center gap-2 mb-3">
+        <iconify-icon icon="solar:magic-stick-3-bold" style="font-size:22px;color:#1777ff"></iconify-icon>
+        <h3 id="aiTitle" class="text-xl font-extrabold">AI 结果</h3>
+      </div>
+      <pre id="aiBody" class="whitespace-pre-wrap text-sm leading-relaxed" style="font-family:inherit;color:#2a261f"></pre>
+    </div>
+  </section>
+
+  <!-- ============ 卖点（不对称 bento） ============ -->
+  <section class="max-w-6xl mx-auto px-5 py-14">
+    <h2 class="display text-4xl mb-8">凭啥用它？<span class="brush">四条。</span></h2>
+    <div class="grid md:grid-cols-6 gap-4">
+      <div class="slab p-6 md:col-span-4">
+        <iconify-icon icon="solar:bolt-circle-bold" style="font-size:34px;color:#ff4a24"></iconify-icon>
+        <div class="text-xl font-extrabold mt-3">一条链接，什么都下</div>
+        <p class="mt-2 text-sm" style="color:#4a453b">背后是 15 万星的 yt-dlp。上千个站点，能认的都能下。</p>
+      </div>
+      <div class="slab slab-blue p-6 md:col-span-2" style="background:#1777ff;color:#fff">
+        <iconify-icon icon="solar:smartphone-bold" style="font-size:34px"></iconify-icon>
+        <div class="text-xl font-extrabold mt-3">手机也能存</div>
+        <p class="mt-2 text-sm" style="opacity:.9">网页直接下，不用装软件。</p>
+      </div>
+      <div class="slab p-6 md:col-span-2">
+        <iconify-icon icon="solar:music-note-2-bold" style="font-size:34px;color:#1777ff"></iconify-icon>
+        <div class="text-xl font-extrabold mt-3">要音频给音频</div>
+        <p class="mt-2 text-sm" style="color:#4a453b">一键抠出 MP3，通勤听。</p>
+      </div>
+      <div class="slab slab-flame p-6 md:col-span-4" style="background:#16130e;color:#fff">
+        <iconify-icon icon="solar:magic-stick-3-bold" style="font-size:34px;color:#ffd23e"></iconify-icon>
+        <div class="text-xl font-extrabold mt-3">AI 顺手帮你总结、翻字幕</div>
+        <p class="mt-2 text-sm" style="opacity:.85">十分钟视频，三句话看完。外语字幕，秒变中文。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 会员 ============ -->
+  <section id="pricing" class="max-w-6xl mx-auto px-5 py-10">
+    <div class="slab p-8 relative overflow-hidden" style="background:#16130e;color:#fff">
+      <div class="grid md:grid-cols-2 gap-8 items-center relative z-10">
+        <div>
+          <span class="tape text-sm">👑 会员</span>
+          <h2 class="display text-4xl mt-4 mb-3">白嫖够了？<br/><span style="color:#ffd23e">解锁狠货。</span></h2>
+          <ul class="space-y-2 text-sm" style="opacity:.92">
+            <li class="flex gap-2"><iconify-icon icon="solar:check-circle-bold" style="color:#ffd23e"></iconify-icon> 2K / 4K 超清，随便下</li>
+            <li class="flex gap-2"><iconify-icon icon="solar:check-circle-bold" style="color:#ffd23e"></iconify-icon> 批量不限量，一次一堆</li>
+            <li class="flex gap-2"><iconify-icon icon="solar:check-circle-bold" style="color:#ffd23e"></iconify-icon> MP3 音频提取</li>
+            <li class="flex gap-2"><iconify-icon icon="solar:check-circle-bold" style="color:#ffd23e"></iconify-icon> AI 总结 + 字幕翻译</li>
+          </ul>
+        </div>
+        <div class="slab p-6" style="background:#fbf8f1;color:#16130e">
+          <div class="flex items-baseline gap-2">
+            <span class="display text-5xl">¥19</span>
+            <span class="line-through" style="color:#9a9384">¥99</span>
+            <span class="tape text-xs">早鸟价</span>
+          </div>
+          <div class="text-sm mt-1" style="color:#4a453b">一年畅下。别犹豫，一杯奶茶钱。</div>
+          <input id="redeemInline" class="paste mt-5" placeholder="有兑换码？粘这里…" />
+          <button id="redeemInlineBtn" class="btn btn-primary w-full justify-center mt-3">
+            <iconify-icon icon="solar:ticket-bold"></iconify-icon> 激活会员
+          </button>
+          <div class="text-xs mt-3 text-center" style="color:#7a7364">没有码？找站长要一个 😉</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 页脚 + 版权声明 ============ -->
+  <footer class="max-w-6xl mx-auto px-5 py-10">
+    <div class="slab p-5" style="background:#fbf8f1">
+      <div class="flex items-start gap-3">
+        <iconify-icon icon="solar:shield-warning-bold" style="font-size:28px;color:#ff4a24"></iconify-icon>
+        <div class="text-sm" style="color:#4a453b">
+          <b>说句正经的：</b>请尊重版权，仅用于个人学习与备份。下载受版权保护的内容、或违反平台规则，可能面临封号或法律风险，后果自负。
+          本项目重在学习「站在巨人肩膀上」的开发思路。
+        </div>
+      </div>
+      <div class="mt-4 pt-4 flex items-center justify-between text-xs" style="border-top:2px dashed #d8d0be;color:#7a7364">
+        <span>下崽儿 · 基于 yt-dlp 打造</span>
+        <span>扳手加咖啡，纯手工糊的 🔧 ☕</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- 兑换码弹层 -->
+<div id="redeemModal" class="modal-mask">
+  <div class="slab p-6 w-full max-w-md" style="background:#fbf8f1">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-extrabold">输入兑换码</h3>
+      <button id="closeRedeem" class="btn btn-ghost" style="padding:6px"><iconify-icon icon="solar:close-circle-bold" style="font-size:24px"></iconify-icon></button>
+    </div>
+    <input id="redeemInput" class="paste" placeholder="VIP-XXXXXX" />
+    <button id="redeemBtn" class="btn btn-primary w-full justify-center mt-4">激活</button>
+    <p class="text-xs mt-3" style="color:#7a7364">激活后本机长期有效（存在浏览器里）。</p>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+/* ========== 设计基调：暖纸底 + 噪点 + 墨黑 + 科技蓝 + 火焰橙 ========== */
+:root {
+  --paper: #f3efe6;
+  --paper-2: #eae4d6;
+  --ink: #16130e;
+  --ink-soft: #4a453b;
+  --blue: #1777ff;
+  --flame: #ff4a24;
+  --lemon: #ffd23e;
+  --line: #16130e;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: #f3efe6;
+  color: #16130e;
+  font-family: "Sora", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 全局噪点：叠一层 SVG 噪声，避免"纯平背景" */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* 暖色光斑，打破单调 */
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  top: -18%;
+  right: -8%;
+  width: 46vw;
+  height: 46vw;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 74, 36, 0.22), transparent 62%);
+  filter: blur(10px);
+}
+
+#app { position: relative; z-index: 1; }
+
+/* ========== 排版 ========== */
+.display {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+.brush {
+  background: linear-gradient(120deg, var(--flame), #ff7a2f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 手绘下划线 */
+.underline-hand {
+  position: relative;
+  white-space: nowrap;
+}
+.underline-hand::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: -6px;
+  height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='12'%3E%3Cpath d='M2 8 C 50 2, 150 12, 198 5' stroke='%231777ff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat;
+  background-size: 100% 100%;
+}
+
+/* ========== 卡片：粗黑描边 + 硬阴影（新粗野） ========== */
+.slab {
+  background: #fbf8f1;
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.slab-blue { box-shadow: 6px 6px 0 var(--blue); }
+.slab-flame { box-shadow: 6px 6px 0 var(--flame); }
+
+/* ========== 按钮 ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s cubic-bezier(.2,.8,.2,1), box-shadow 0.12s;
+  text-decoration: none;
+  color: var(--ink);
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+.btn-primary { background: var(--flame); color: #fff; }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-ghost { background: transparent; box-shadow: none; border-color: transparent; }
+.btn-ghost:hover { box-shadow: none; background: rgba(0,0,0,0.05); transform: none; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: 3px 3px 0 var(--ink); }
+
+/* 清晰度胶囊 */
+.chip {
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.12s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip:hover { background: var(--lemon); }
+.chip.active { background: var(--ink); color: #fff; }
+.chip .sz { font-weight: 500; opacity: 0.6; font-size: 12px; }
+
+/* 输入框 */
+.paste {
+  width: 100%;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 16px 20px;
+  font-size: 16px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ink);
+  outline: none;
+  font-family: inherit;
+}
+.paste:focus { box-shadow: 4px 4px 0 var(--blue); }
+
+/* 进度条 */
+.bar {
+  height: 12px;
+  background: #e7e0d2;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar > i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(45deg, var(--blue), var(--blue) 8px, #4a9bff 8px, #4a9bff 16px);
+  transition: width 0.3s ease;
+}
+.bar.done > i { background: #1fa971; }
+.bar.error > i { background: var(--flame); }
+
+/* 平台图标行 */
+.plat {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 22px;
+  transition: transform .15s;
+}
+.plat:hover { transform: translateY(-4px) rotate(-4deg); background: var(--lemon); }
+
+/* 会员锁遮罩 */
+.locked { position: relative; }
+.locked::after {
+  content: "🔒 会员专属";
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-weight: 800;
+  background: rgba(251,248,241,0.82);
+  border-radius: 14px;
+  backdrop-filter: blur(2px);
+}
+
+/* toast */
+#toast {
+  position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(120%);
+  background: var(--ink); color: #fff; padding: 14px 22px; border-radius: 999px;
+  font-weight: 700; z-index: 90; transition: transform .3s cubic-bezier(.2,.9,.2,1);
+  box-shadow: 4px 4px 0 var(--flame); max-width: 90vw;
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+
+/* 弹层 */
+.modal-mask {
+  position: fixed; inset: 0; background: rgba(22,19,14,0.55); z-index: 80;
+  display: none; place-items: center; padding: 20px;
+}
+.modal-mask.show { display: grid; }
+
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.reveal { animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+.tape {
+  background: var(--lemon);
+  border: 2px solid var(--ink);
+  transform: rotate(-2deg);
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 6px;
+  display: inline-block;
+}
