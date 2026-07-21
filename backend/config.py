@@ -40,6 +40,14 @@ FREE_MAX_BATCH = int(os.getenv("FREE_MAX_BATCH", "3"))
 # 会员有效期（天）
 MEMBER_DAYS = int(os.getenv("MEMBER_DAYS", "365"))
 
+# 万能兑换码：可多人重复使用、永不作废（不记入 used_codes.json）。
+# 逗号分隔，可在 .env 用 UNIVERSAL_CODES 覆盖。兑换后即得完整会员权限（含 AI）。
+UNIVERSAL_CODES = [
+    c.strip().upper()
+    for c in os.getenv("UNIVERSAL_CODES", "VIP-FOREVER").split(",")
+    if c.strip()
+]
+
 
 def ai_enabled() -> bool:
     return bool(AI_API_KEY and AI_BASE_URL)

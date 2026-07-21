@@ -78,6 +78,9 @@ def redeem(code: str) -> tuple[bool, str]:
     code = (code or "").strip().upper()
     if not code:
         return False, "请输入兑换码"
+    # 万能码：多人可重复使用、永不作废，不记录 used
+    if code in config.UNIVERSAL_CODES:
+        return True, issue_token()
     codes = _load(CODES_FILE, [])
     used = _load(USED_FILE, {})
     if code not in codes:

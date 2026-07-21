@@ -62,8 +62,11 @@ Copy-Item .env.example .env
 
 ## 会员兑换码
 
-首次启动会在 `backend/data/codes.json` 自动生成 5 个示例码（形如 `VIP-XXXXXX`）。
-在网页右上角「兑换码」输入即可激活会员，令牌存在浏览器本地。已用的码记录在 `used_codes.json`。
+首次启动会在 `backend/data/codes.json` 自动生成 5 个示例码（形如 `VIP-XXXXXX`），这类码**一次性**，用过即记入 `used_codes.json` 作废。
+在网页右上角「兑换码」输入即可激活会员，令牌存在浏览器本地。
+
+**万能兑换码 `VIP-FOREVER`**：可多人重复使用、永不作废，兑换即得完整会员（2K/4K、无限批量、MP3、AI 总结/翻译）。
+可在 `.env` 用 `UNIVERSAL_CODES` 配置（逗号分隔多个）。正式上线请务必改成别人猜不到的值。
 
 ## AI 配置说明
 

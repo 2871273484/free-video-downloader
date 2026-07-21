@@ -99,8 +99,9 @@ downloads/         下载临时目录（按 TTL 自动清理）
 
 ## 五、会员与商业化
 
-- 无数据库方案：首次启动在 `backend/data/codes.json` 生成示例兑换码（形如 `VIP-XXXXXX`）。
-- 兑换后签发 HMAC 令牌存浏览器本地，已用码记进 `used_codes.json`。
+- 无数据库方案：首次启动在 `backend/data/codes.json` 生成示例兑换码（形如 `VIP-XXXXXX`），一次性，用过记进 `used_codes.json` 作废。
+- 兑换后签发 HMAC 令牌存浏览器本地。
+- **万能兑换码**：`.env` 的 `UNIVERSAL_CODES`（默认 `VIP-FOREVER`）可多人重复使用、永不作废，兑换即得完整会员（含 AI）。适合演示/发福利，正式上线请改成别人猜不到的值。
 - 分级额度（可在 `.env` 调）：
 
 | 能力 | 免费 | 会员 |
